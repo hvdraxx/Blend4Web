@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Table } from "./components/Table/Table";
+
+const initElements = [
+  { name: "Люминесценция", type: "main", color: "#FFCD69" },
+  { name: "Безмятежность", type: "other", color: "#AA7DFF" },
+  { name: "Сияние", type: "side", color: "#FF5A86" },
+  { name: "Вдохновение", type: "main", color: "#64F5FF" },
+  { name: "Периодичность", type: "side", color: "#00FF73" },
+];
 
 function App() {
+  const [elements, setElements] = useState([]);
+  const [isAddingNewItem, setIsAddingNewItem] = useState(false);
+
+  useEffect(() => {
+    if (elements.length === 0) {
+      if (localStorage.elements) {
+        const elementsFromStorage = JSON.parse(localStorage.elements);
+        setElements(elementsFromStorage);
+      } else {
+        setElements(initElements);
+      }
+    }
+  }, [elements.length]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Table
+        elements={elements}
+        setElements={setElements}
+        isAddingNewItem={isAddingNewItem}
+        setIsAddingNewItem={setIsAddingNewItem}
+      />
     </div>
   );
 }
